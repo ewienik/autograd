@@ -1,5 +1,6 @@
-    let g:ale_linters = { 'cpp': [ 'clangd' ] }
-    "let g:ale_cpp_clangd_options = '--clang-tidy --clang-tidy-checks="-*,clang*,bugprone*,cppcoreguidelines*,misc*,modernize*,performance*,readability*"'
-    let g:ale_set_loclist = 0
-    let g:ale_set_quickfix = 1
-    "let g:ale_open_list = 1
+let g:ale_linters = { 'cpp': [ 'clangd' ] }
+let g:ale_cpp_clangd_options = '--clang-tidy'
+"let g:ale_cpp_clangd_options = '--clang-tidy --clang-tidy-checks="-*,clang*,bugprone*,cppcoreguidelines*,misc*,modernize*,performance*,readability*"'
+"let g:ale_set_loclist = 0
+"let g:ale_set_quickfix = 1
+"let g:ale_open_list = 1

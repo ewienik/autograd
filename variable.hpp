@@ -8,11 +8,14 @@ template <int N, int M>
 struct Variable {
     using MatrixT = Matrix<N, M>;
 
-    constexpr Variable(std::initializer_list<Float> initial) : value_(initial) {}
+    template <typename... Args>
+    constexpr Variable(Args&&... args) : value_{std::forward<Args>(args)...} {
+        static_assert(sizeof...(args) == N * M);
+    }
 
-    auto value() -> MatrixT& { return value_; }
-    auto value() const -> MatrixT& { return value_; }
-    auto grad() const -> MatrixT& { return grad_; }
+    [[nodiscard]] auto value() -> MatrixT& { return value_; }
+    [[nodiscard]] auto value() const -> MatrixT const& { return value_; }
+    [[nodiscard]] auto grad() const -> MatrixT const& { return grad_; }
 
 private:
     Matrix<N, M> value_{};

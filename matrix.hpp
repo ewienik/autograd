@@ -7,12 +7,17 @@
 
 template <int N, int M>
 struct Matrix {
-    constexpr Matrix(std::initializer_list<Float> initial) : value_(initial) { assert(initial.size() == N * M); }
+    constexpr Matrix() = default;
+    template <typename... Args>
+    constexpr Matrix(Args&&... args) : value_{std::forward<Args>(args)...} {
+        static_assert(sizeof...(args) == N * M);
+    }
 
-    auto at(int n, int m) const { return value_.at(n, m); }
+    auto at(int n, int m) -> Float& { return value_.at(n * N + m); }
+    [[nodiscard]] auto at(int n, int m) const -> Float const& { return value_.at(n * N + m); }
 
 private:
-    std::array<Float, N * M> value_;
+    std::array<Float, N * M> value_{0.F};
 };
 
 #endif
