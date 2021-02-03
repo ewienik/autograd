@@ -25,3 +25,8 @@ TEST_CASE("Matrix2x2") {
     REQUIRE(matrix.grad().item(1, 1) == 0.F);
 }
 
+TEST_CASE("PlusScalar") {
+    auto a = Scalar{3.F};
+    auto b = Scalar{4.F};
+    // auto c = a + b;
+}
