@@ -19,11 +19,10 @@ struct Mul<1, 1, N, M, OL, OR> {
     Mul(LeftT left, RightT right) : left_(std::move(left)), right_(std::move(right)) {}
 
     auto fwdprop(ValueT& value) { value = right_->value() * left_->value().item(); }
-    auto backprop(ValueT const& chain) {
-        left_->backprop(chain);
-        right_->backprop(chain);
+    auto backprop(ValueT const& chain, [[maybe_unused]] ValueT const& value) {
+        left_->backprop(matmul(chain, transpose(right_->value())));
+        right_->backprop(chain * left_->value().item());
     }
-    static auto grad([[maybe_unused]] ValueT const& value) { return ValueT::one(); }
     auto reset() {
         left_->reset();
         right_->reset();
@@ -47,11 +46,10 @@ struct Mul<N, M, 1, 1, OL, OR> {
     Mul(LeftT left, RightT right) : left_(std::move(left)), right_(std::move(right)) {}
 
     auto fwdprop(ValueT& value) { value = left_->value() * right_->value().item(); }
-    auto backprop(ValueT const& chain) {
-        left_->backprop(chain);
-        right_->backprop(chain);
+    auto backprop(ValueT const& chain, [[maybe_unused]] ValueT const& value) {
+        left_->backprop(chain * right_->value().item());
+        right_->backprop(matmul(chain, transpose(left_->value())));
     }
-    static auto grad([[maybe_unused]] ValueT const& value) { return ValueT::one(); }
     auto reset() {
         left_->reset();
         right_->reset();
@@ -75,11 +73,10 @@ struct Mul<1, 1, 1, 1, OL, OR> {
     Mul(LeftT left, RightT right) : left_(std::move(left)), right_(std::move(right)) {}
 
     auto fwdprop(ValueT& value) { value.item() = right_->value().item() * left_->value().item(); }
-    auto backprop(ValueT const& chain) {
-        left_->backprop(chain);
-        right_->backprop(chain);
+    auto backprop(ValueT const& chain, [[maybe_unused]] ValueT const& value) {
+        left_->backprop(chain * right_->value().item());
+        right_->backprop(chain * left_->value().item());
     }
-    static auto grad([[maybe_unused]] ValueT const& value) { return ValueT::one(); }
     auto reset() {
         left_->reset();
         right_->reset();

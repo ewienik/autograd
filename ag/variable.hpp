@@ -12,9 +12,7 @@ namespace ag {
 template <typename Operation, int N, int M>
 concept VariableOperation = requires(Operation op, Value<N, M>& valuerw, Value<N, M> const& valuero) {
     op.fwdprop(valuerw);
-    op.backprop(valuero);
-    { op.grad(valuero) }
-    ->std::same_as<Value<N, M>>;
+    op.backprop(valuero, valuero);
     op.reset();
     op.zerograd();
 };
@@ -47,9 +45,8 @@ struct VariableShared {
     [[nodiscard]] auto grad() const -> ValueT const& { return grad_; }
 
     auto backprop(ValueT const& chain) {
-        auto grad = chain * operation_.grad(value_);
-        grad_ = grad_ + grad;
-        operation_.backprop(grad);
+        grad_ = grad_ + chain;
+        operation_.backprop(chain, value_);
     }
     auto zerograd() {
         grad_.fill(0.F);

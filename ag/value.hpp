@@ -77,6 +77,24 @@ private:
     std::array<Float, N * M> data_{0.F};
 };
 
+template <int N, int M>
+auto transpose(Value<N, M> const& src) {
+    ag::Value<M, N> dst;
+    dst.transform([&src](auto n, auto m) { return src.item(m, n); });
+    return dst;
+}
+
+template <int N, int M, int O>
+auto matmul(Value<N, M> const& left, Value<M, O> const& right) {
+    ag::Value<N, O> dst;
+    dst.transform([&left, &right](auto n, auto o) {
+        auto sum = 0.F;
+        for (auto m = 0; m < M; ++m) { sum += left.item(n, m) * right.item(m, o); }
+        return sum;
+    });
+    return dst;
+}
+
 }  // namespace ag
 
 template <int N, int M>
