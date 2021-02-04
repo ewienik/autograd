@@ -1,4 +1,5 @@
 #include "catch.hpp"
+#include "operation.hpp"
 #include "variable.hpp"
 
 TEST_CASE("Scalar") {
@@ -28,5 +29,30 @@ TEST_CASE("Matrix2x2") {
 TEST_CASE("PlusScalar") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
-    // auto c = a + b;
+    auto c = a + b;
+    REQUIRE(c.value().item() == 7.F);
+    REQUIRE(c.value(true).item() == 7.F);
+
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+    c.backprop();
+    REQUIRE(a.grad().item() == 4.F);
+    REQUIRE(b.grad().item() == 3.F);
+    c.zerograd();
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+
+    a.value().fill(4.F);
+    b.value().fill(5.F);
+    REQUIRE(c.value().item() == 7.F);
+    REQUIRE(c.value(true).item() == 9.F);
+
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+    c.backprop();
+    REQUIRE(a.grad().item() == 5.F);
+    REQUIRE(b.grad().item() == 4.F);
+    c.zerograd();
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
 }
