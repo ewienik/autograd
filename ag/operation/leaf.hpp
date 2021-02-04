@@ -1,7 +1,9 @@
-#ifndef OPERATIONLEAF_HPP
-#define OPERATIONLEAF_HPP
+#ifndef AG_OPERATION_LEAF_HPP
+#define AG_OPERATION_LEAF_HPP
 
-struct OperationLeaf {
+namespace ag::operation {
+
+struct Leaf {
     template <typename Value>
     static auto fwdprop(Value& value) {}
     template <typename Value>
@@ -11,6 +13,8 @@ struct OperationLeaf {
     static auto reset() {}
     static auto zerograd() {}
 };
+
+}  // namespace ag::operation
 
 #endif
 

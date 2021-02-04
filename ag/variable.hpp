@@ -1,13 +1,15 @@
-#ifndef VARIABLE_HPP
-#define VARIABLE_HPP
+#ifndef AG_VARIABLE_HPP
+#define AG_VARIABLE_HPP
 
+#include <ag/operation/leaf.hpp>
+#include <ag/types.hpp>
+#include <ag/variableshared.hpp>
 #include <cassert>
 #include <memory>
-#include "operationleaf.hpp"
-#include "types.hpp"
-#include "variableshared.hpp"
 
-template <int N, int M, VariableOperation<N, M> Operation = OperationLeaf>
+namespace ag {
+
+template <int N, int M, VariableOperation<N, M> Operation = operation::Leaf>
 struct Variable final {
     static_assert(N > 0 && M > 0);
 
@@ -41,5 +43,7 @@ template <int N>
 using Vector = Variable<N, 1>;
 template <int N, int M>
 using Matrix = Variable<N, M>;
+
+}  // namespace ag
 
 #endif

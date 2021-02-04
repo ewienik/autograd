@@ -4,6 +4,11 @@ project(autograd)
 
 add_executable(autograd main.cpp tests.cpp)
 
+target_include_directories(autograd
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}
+)
+
 set_target_properties(autograd PROPERTIES
     CXX_STANDARD 20
     CXX_STANDARD_REQUIRED ON

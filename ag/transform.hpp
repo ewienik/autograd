@@ -1,9 +1,10 @@
-#ifndef TRANSFORM_HPP
-#define TRANSFORM_HPP
+#ifndef AG_TRANSFORM_HPP
+#define AG_TRANSFORM_HPP
 
-#include "types.hpp"
-#include "value.hpp"
+#include <ag/types.hpp>
+#include <ag/value.hpp>
 
+namespace ag {
 template <int N, int M>
 auto transformSum(Value<N, M> const& src, Float bias) {
     Value<N, M> dst;
@@ -38,6 +39,8 @@ auto transformAdd(Value<N, M> const& left, Value<N, M> const& right) {
     dst.transform([&left, &right](auto n, auto m) { return left.item(n, m) + right.item(n, m); });
     return dst;
 }
+
+}  // namespace ag
 
 #endif
 

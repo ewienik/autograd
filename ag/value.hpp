@@ -1,10 +1,12 @@
-#ifndef VALUE_HPP
-#define VALUE_HPP
+#ifndef AG_VALUE_HPP
+#define AG_VALUE_HPP
 
+#include <ag/types.hpp>
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include "types.hpp"
+
+namespace ag {
 
 template <typename Operation>
 concept ValueTransformOperation = requires(Operation op) {
@@ -74,5 +76,7 @@ struct Value {
 private:
     std::array<Float, N * M> data_{0.F};
 };
+
+}  // namespace ag
 
 #endif

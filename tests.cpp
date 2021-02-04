@@ -1,6 +1,7 @@
+#include <ag/ag.hpp>
 #include "catch.hpp"
-#include "operation.hpp"
-#include "variable.hpp"
+
+using namespace ag;
 
 TEST_CASE("Scalar") {
     auto scalar = Scalar{4.F};

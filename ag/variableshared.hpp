@@ -1,7 +1,9 @@
-#ifndef VARIABLESHARED_HPP
-#define VARIABLESHARED_HPP
+#ifndef AG_VARIABLESHARED_HPP
+#define AG_VARIABLESHARED_HPP
 
-#include "value.hpp"
+#include <ag/value.hpp>
+
+namespace ag {
 
 template <typename Operation, int N, int M>
 concept VariableOperation = requires(Operation op, Value<N, M>& valuerw, Value<N, M> const& valuero) {
@@ -53,6 +55,8 @@ private:
     Operation operation_{};
     bool calculated_{};
 };
+
+}  // namespace ag
 
 #endif
 
