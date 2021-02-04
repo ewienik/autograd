@@ -58,6 +58,48 @@ TEST_CASE("PlusScalar") {
     REQUIRE(b.grad().item() == 0.F);
 }
 
+TEST_CASE("PlusVectorScalar") {
+    auto a = Vector<2>{2.F, 3.F};
+    auto b = Scalar{4.F};
+    auto c = a + b;
+    REQUIRE(c.value().item(0) == 6.F);
+    REQUIRE(c.value().item(1) == 7.F);
+    REQUIRE(c.value(true).item(0) == 6.F);
+    REQUIRE(c.value().item(1) == 7.F);
+
+    REQUIRE(a.grad().item(0) == 0.F);
+    REQUIRE(a.grad().item(1) == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+    c.backprop();
+    REQUIRE(a.grad().item(0) == 1.F);
+    REQUIRE(a.grad().item(1) == 1.F);
+    REQUIRE(b.grad().item() == 1.F);
+    c.zerograd();
+    REQUIRE(a.grad().item(0) == 0.F);
+    REQUIRE(a.grad().item(1) == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+
+    a.value().item(0) = 3.F;
+    a.value().item(1) = 4.F;
+    b.value().fill(5.F);
+    REQUIRE(c.value().item(0) == 6.F);
+    REQUIRE(c.value().item(1) == 7.F);
+    REQUIRE(c.value(true).item(0) == 8.F);
+    REQUIRE(c.value().item(1) == 9.F);
+
+    REQUIRE(a.grad().item(0) == 0.F);
+    REQUIRE(a.grad().item(1) == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+    c.backprop();
+    REQUIRE(a.grad().item(0) == 1.F);
+    REQUIRE(a.grad().item(1) == 1.F);
+    REQUIRE(b.grad().item() == 1.F);
+    c.zerograd();
+    REQUIRE(a.grad().item(0) == 0.F);
+    REQUIRE(a.grad().item(1) == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+}
+
 TEST_CASE("MulScalar") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};

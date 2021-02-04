@@ -49,7 +49,7 @@ struct Plus<N, M, 1, 1, OL, OR> {
     auto fwdprop(ValueT& value) { value = left_->value() + right_->value().item(); }
     auto backprop(ValueT const& chain, [[maybe_unused]] ValueT const& value) {
         left_->backprop(chain);
-        right_->backprop(chain);
+        right_->backprop(matmul(chain));
     }
     auto reset() {
         left_->reset();
