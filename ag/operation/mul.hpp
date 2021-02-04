@@ -1,9 +1,8 @@
 #ifndef AG_OPERATION_MUL_HPP
 #define AG_OPERATION_MUL_HPP
 
-#include <ag/transform.hpp>
 #include <ag/value.hpp>
-#include <ag/variableshared.hpp>
+#include <ag/variable.hpp>
 #include <memory>
 
 namespace ag::operation {
@@ -19,7 +18,7 @@ struct Mul<1, 1, N, M, OL, OR> {
 
     Mul(LeftT left, RightT right) : left_(std::move(left)), right_(std::move(right)) {}
 
-    auto fwdprop(ValueT& value) { transformSum(value, right_->value(), left_->value().item()); }
+    auto fwdprop(ValueT& value) { value = right_->value() * left_->value().item(); }
     auto backprop(ValueT const& chain) {
         left_->backprop(chain);
         right_->backprop(chain);
@@ -47,7 +46,7 @@ struct Mul<N, M, 1, 1, OL, OR> {
 
     Mul(LeftT left, RightT right) : left_(std::move(left)), right_(std::move(right)) {}
 
-    auto fwdprop(ValueT& value) { transformSum(value, left_->value(), right_->value().item()); }
+    auto fwdprop(ValueT& value) { value = left_->value() * right_->value().item(); }
     auto backprop(ValueT const& chain) {
         left_->backprop(chain);
         right_->backprop(chain);

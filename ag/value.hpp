@@ -79,4 +79,42 @@ private:
 
 }  // namespace ag
 
+template <int N, int M>
+auto operator+(ag::Value<N, M> const& left, ag::Float right) {
+    ag::Value<N, M> dst;
+    dst.transform([&left, right](auto n, auto m) { return left.item(n, m) + right; });
+    return dst;
+}
+
+template <int N, int M>
+auto operator+(ag::Float left, ag::Value<N, M> const& right) {
+    return operator+(right, left);
+}
+
+template <int N, int M>
+auto operator+(ag::Value<N, M> const& left, ag::Value<N, M> const& right) {
+    ag::Value<N, M> dst;
+    dst.transform([&left, &right](auto n, auto m) { return left.item(n, m) + right.item(n, m); });
+    return dst;
+}
+
+template <int N, int M>
+auto operator*(ag::Value<N, M> const& left, ag::Float right) {
+    ag::Value<N, M> dst;
+    dst.transform([&left, right](auto n, auto m) { return left.item(n, m) * right; });
+    return dst;
+}
+
+template <int N, int M>
+auto operator*(ag::Float left, ag::Value<N, M> const& right) {
+    return operator*(right, left);
+}
+
+template <int N, int M>
+auto operator*(ag::Value<N, M> const& left, ag::Value<N, M> const& right) {
+    ag::Value<N, M> dst;
+    dst.transform([&left, &right](auto n, auto m) { return left.item(n, m) * right.item(n, m); });
+    return dst;
+}
+
 #endif
