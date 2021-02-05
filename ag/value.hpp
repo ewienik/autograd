@@ -67,25 +67,29 @@ struct Value {
             });
     }
 
-    static auto one() {
+    static auto ones() {
         auto value = ValueT{};
         value.fill(1.F);
         return value;
     }
 
+    static auto zeros() { return ValueT{}; }
+
 private:
     std::array<Float, N * M> data_{0.F};
 };
 
+}  // namespace ag
+
 template <int N, int M>
-auto transpose(Value<N, M> const& src) {
+auto operator*(ag::Value<N, M> const& src) {
     ag::Value<M, N> dst;
     dst.transform([&src](auto n, auto m) { return src.item(m, n); });
     return dst;
 }
 
 template <int N, int M, int O>
-auto matmul(Value<N, M> const& left, Value<M, O> const& right) {
+auto operator->*(ag::Value<N, M> const& left, ag::Value<M, O> const& right) {
     ag::Value<N, O> dst;
     dst.transform([&left, &right](auto n, auto o) {
         auto sum = 0.F;
@@ -94,8 +98,6 @@ auto matmul(Value<N, M> const& left, Value<M, O> const& right) {
     });
     return dst;
 }
-
-}  // namespace ag
 
 template <int N, int M>
 auto operator+(ag::Value<N, M> const& left, ag::Float right) {

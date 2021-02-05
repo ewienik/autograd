@@ -82,7 +82,7 @@ struct Variable final {
 
     [[nodiscard]] auto grad() const -> ValueT const& { return variable_->grad(); }
 
-    auto backprop(ValueT const& chain = ValueT::one()) { variable_->backprop(chain); }
+    auto backprop(ValueT const& chain = ValueT::ones()) { variable_->backprop(chain); }
     auto zerograd() { variable_->zerograd(); }
 
 private:

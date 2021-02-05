@@ -27,7 +27,7 @@ TEST_CASE("Matrix2x2") {
     REQUIRE(matrix.grad().item(1, 1) == 0.F);
 }
 
-TEST_CASE("PlusScalar") {
+TEST_CASE("PlusScalars") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
     auto c = a + b;
@@ -58,49 +58,41 @@ TEST_CASE("PlusScalar") {
     REQUIRE(b.grad().item() == 0.F);
 }
 
-TEST_CASE("PlusVectorScalar") {
+TEST_CASE("PlusVectors") {
     auto a = Vector<2>{2.F, 3.F};
-    auto b = Scalar{4.F};
+    auto b = Vector<2>{4.F, 5.F};
     auto c = a + b;
     REQUIRE(c.value().item(0) == 6.F);
-    REQUIRE(c.value().item(1) == 7.F);
-    REQUIRE(c.value(true).item(0) == 6.F);
-    REQUIRE(c.value().item(1) == 7.F);
+    REQUIRE(c.value().item(1) == 8.F);
 
-    REQUIRE(a.grad().item(0) == 0.F);
-    REQUIRE(a.grad().item(1) == 0.F);
-    REQUIRE(b.grad().item() == 0.F);
     c.backprop();
     REQUIRE(a.grad().item(0) == 1.F);
     REQUIRE(a.grad().item(1) == 1.F);
-    REQUIRE(b.grad().item() == 1.F);
-    c.zerograd();
-    REQUIRE(a.grad().item(0) == 0.F);
-    REQUIRE(a.grad().item(1) == 0.F);
-    REQUIRE(b.grad().item() == 0.F);
+    REQUIRE(b.grad().item(0) == 1.F);
+    REQUIRE(b.grad().item(1) == 1.F);
 
-    a.value().item(0) = 3.F;
-    a.value().item(1) = 4.F;
-    b.value().fill(5.F);
+    a.value() = {3.F, 4.F};
+    b.value() = {5.F, 6.F};
     REQUIRE(c.value().item(0) == 6.F);
-    REQUIRE(c.value().item(1) == 7.F);
+    REQUIRE(c.value().item(1) == 8.F);
     REQUIRE(c.value(true).item(0) == 8.F);
-    REQUIRE(c.value().item(1) == 9.F);
+    REQUIRE(c.value().item(1) == 10.F);
 
-    REQUIRE(a.grad().item(0) == 0.F);
-    REQUIRE(a.grad().item(1) == 0.F);
-    REQUIRE(b.grad().item() == 0.F);
+    c.backprop();
+    REQUIRE(a.grad().item(0) == 2.F);
+    REQUIRE(a.grad().item(1) == 2.F);
+    REQUIRE(b.grad().item(0) == 2.F);
+    REQUIRE(b.grad().item(1) == 2.F);
+
+    c.zerograd();
     c.backprop();
     REQUIRE(a.grad().item(0) == 1.F);
     REQUIRE(a.grad().item(1) == 1.F);
-    REQUIRE(b.grad().item() == 1.F);
-    c.zerograd();
-    REQUIRE(a.grad().item(0) == 0.F);
-    REQUIRE(a.grad().item(1) == 0.F);
-    REQUIRE(b.grad().item() == 0.F);
+    REQUIRE(b.grad().item(0) == 1.F);
+    REQUIRE(b.grad().item(1) == 1.F);
 }
 
-TEST_CASE("MulScalar") {
+TEST_CASE("MulScalars") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
     auto c = a * b;
@@ -129,4 +121,32 @@ TEST_CASE("MulScalar") {
     c.zerograd();
     REQUIRE(a.grad().item() == 0.F);
     REQUIRE(b.grad().item() == 0.F);
+}
+
+TEST_CASE("MulVectors") {
+    auto a = Vector<2>{2.F, 3.F};
+    auto b = Vector<2>{4.F, 5.F};
+    auto c = a * b;
+    REQUIRE(c.value().item(0) == 8.F);
+    REQUIRE(c.value().item(1) == 15.F);
+
+    c.backprop();
+    REQUIRE(a.grad().item(0) == 4.F);
+    REQUIRE(a.grad().item(1) == 5.F);
+    REQUIRE(b.grad().item(0) == 2.F);
+    REQUIRE(b.grad().item(1) == 3.F);
+
+    a.value() = {3.F, 4.F};
+    b.value() = {5.F, 6.F};
+    REQUIRE(c.value().item(0) == 8.F);
+    REQUIRE(c.value().item(1) == 15.F);
+    REQUIRE(c.value(true).item(0) == 15.F);
+    REQUIRE(c.value().item(1) == 24.F);
+
+    c.zerograd();
+    c.backprop();
+    REQUIRE(a.grad().item(0) == 5.F);
+    REQUIRE(a.grad().item(1) == 6.F);
+    REQUIRE(b.grad().item(0) == 3.F);
+    REQUIRE(b.grad().item(1) == 4.F);
 }
