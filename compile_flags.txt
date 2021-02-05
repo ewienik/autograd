@@ -1,3 +1,0 @@
--std=c++2a
--I/home/pawel/proj/ewienik-autograd
--I/home/pawel/ewienik/autograd

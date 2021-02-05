@@ -7,6 +7,7 @@ add_executable(autograd main.cpp tests.cpp)
 target_include_directories(autograd
     PRIVATE
     ${PROJECT_SOURCE_DIR}
+    ext
 )
 
 set_target_properties(autograd PROPERTIES
