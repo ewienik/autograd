@@ -90,8 +90,10 @@ private:
 };
 
 using Scalar = Variable<1, 1>;
+template <int M>
+using VectorRow = Variable<1, M>;
 template <int N>
-using Vector = Variable<N, 1>;
+using VectorCol = Variable<N, 1>;
 template <int N, int M>
 using Matrix = Variable<N, M>;
 

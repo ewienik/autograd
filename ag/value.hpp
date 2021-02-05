@@ -22,9 +22,7 @@ struct Value {
 
     constexpr Value() = default;
     template <typename... Args>
-    constexpr Value(Args&&... args) : data_{std::forward<Args>(args)...} {
-        static_assert(sizeof...(args) == N * M);
-    }
+    constexpr Value(Args&&... args) : data_{std::forward<Args>(args)...} {}
 
     [[nodiscard]] auto item() -> Float& {
         static_assert(N == 1 && M == 1, "item() method is only for scalars");
@@ -36,23 +34,23 @@ struct Value {
     }
 
     [[nodiscard]] auto item(int n) -> Float& {
-        static_assert(M == 1, "item() method is only for vectors");
-        assert(n >= 0 && n < N);
+        static_assert(N == 1 || M == 1, "item() method is only for vectors");
+        assert(n >= 0 && n < std::max(N, M));
         return data_[n];
     }
     [[nodiscard]] auto item(int n) const -> Float const& {
-        static_assert(M == 1, "item() method is only for vectors");
-        assert(n >= 0 && n < N);
+        static_assert(N == 1 || M == 1, "item() method is only for vectors");
+        assert(n >= 0 && n < std::max(N, M));
         return data_[n];
     }
 
     auto item(int n, int m) -> Float& {
         assert(n >= 0 && n < N && m >= 0 && m < M);
-        return data_[m * N + n];
+        return data_[n * M + m];
     }
     [[nodiscard]] auto item(int n, int m) const -> Float const& {
         assert(n >= 0 && n < N && m >= 0 && m < M);
-        return data_[m * N + n];
+        return data_[n * M + m];
     }
 
     auto fill(Float value) { data_.fill(value); }
@@ -63,7 +61,7 @@ struct Value {
             std::begin(data_), std::end(data_), std::begin(data_),
             [start = data_.data(), operation = std::forward<Operation>(operation)](auto& item) {
                 auto distance = &item - start;
-                return operation(distance % N, distance / N);
+                return operation(distance / M, distance % M);
             });
     }
 
@@ -79,17 +77,15 @@ private:
     std::array<Float, N * M> data_{0.F};
 };
 
-}  // namespace ag
-
 template <int N, int M>
-auto operator*(ag::Value<N, M> const& src) {
+auto transpose(ag::Value<N, M> const& src) {
     ag::Value<M, N> dst;
     dst.transform([&src](auto n, auto m) { return src.item(m, n); });
     return dst;
 }
 
 template <int N, int M, int O>
-auto operator->*(ag::Value<N, M> const& left, ag::Value<M, O> const& right) {
+auto matmul(ag::Value<N, M> const& left, ag::Value<M, O> const& right) {
     ag::Value<N, O> dst;
     dst.transform([&left, &right](auto n, auto o) {
         auto sum = 0.F;
@@ -98,6 +94,8 @@ auto operator->*(ag::Value<N, M> const& left, ag::Value<M, O> const& right) {
     });
     return dst;
 }
+
+}  // namespace ag
 
 template <int N, int M>
 auto operator+(ag::Value<N, M> const& left, ag::Float right) {
