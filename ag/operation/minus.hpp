@@ -1,5 +1,5 @@
-#ifndef AG_OPERATION_PLUS_HPP
-#define AG_OPERATION_PLUS_HPP
+#ifndef AG_OPERATION_MINUS_HPP
+#define AG_OPERATION_MINUS_HPP
 
 #include <ag/value.hpp>
 #include <ag/variable.hpp>
@@ -8,17 +8,17 @@
 namespace ag::operation {
 
 template <int N, int M, typename OL, typename OR>
-struct Plus {
+struct Minus {
     using LeftT = std::shared_ptr<VariableShared<N, M, OL>>;
     using RightT = std::shared_ptr<VariableShared<N, M, OR>>;
     using ValueT = Value<N, M>;
 
-    Plus(LeftT left, RightT right) : left_(std::move(left)), right_(std::move(right)) {}
+    Minus(LeftT left, RightT right) : left_(std::move(left)), right_(std::move(right)) {}
 
-    auto fwdprop(ValueT& value) { value = left_->value() + right_->value(); }
+    auto fwdprop(ValueT& value) { value = left_->value() - right_->value(); }
     auto backprop(ValueT const& chain, [[maybe_unused]] ValueT const& value) {
         left_->backprop(chain);
-        right_->backprop(chain);
+        right_->backprop(-1.F * chain);
     }
     auto reset() {
         left_->reset();

@@ -92,6 +92,64 @@ TEST_CASE("PlusVectors") {
     REQUIRE(b.grad().item(1) == 1.F);
 }
 
+TEST_CASE("MinusScalars") {
+    auto a = Scalar{3.F};
+    auto b = Scalar{4.F};
+    auto c = a - b;
+    REQUIRE(c.value().item() == -1.F);
+
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+    c.backprop();
+    REQUIRE(a.grad().item() == 1.F);
+    REQUIRE(b.grad().item() == -1.F);
+    c.zerograd();
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+
+    a.value() = {6.F};
+    b.value() = {5.F};
+    REQUIRE(c.value().item() == -1.F);
+    REQUIRE(c.value(true).item() == 1.F);
+
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+    c.backprop();
+    REQUIRE(a.grad().item() == 1.F);
+    REQUIRE(b.grad().item() == -1.F);
+    c.zerograd();
+    REQUIRE(a.grad().item() == 0.F);
+    REQUIRE(b.grad().item() == 0.F);
+}
+
+TEST_CASE("MinusVectors") {
+    auto a = Vector<2>{2.F, 3.F};
+    auto b = Vector<2>{4.F, 5.F};
+    auto c = a - b;
+    REQUIRE(c.value().item(0) == -2.F);
+    REQUIRE(c.value().item(1) == -2.F);
+
+    c.backprop();
+    REQUIRE(a.grad().item(0) == 1.F);
+    REQUIRE(a.grad().item(1) == 1.F);
+    REQUIRE(b.grad().item(0) == -1.F);
+    REQUIRE(b.grad().item(1) == -1.F);
+
+    a.value() = {7.F, 9.F};
+    b.value() = {5.F, 6.F};
+    REQUIRE(c.value().item(0) == -2.F);
+    REQUIRE(c.value().item(1) == -2.F);
+    REQUIRE(c.value(true).item(0) == 2.F);
+    REQUIRE(c.value().item(1) == 3.F);
+
+    c.zerograd();
+    c.backprop();
+    REQUIRE(a.grad().item(0) == 1.F);
+    REQUIRE(a.grad().item(1) == 1.F);
+    REQUIRE(b.grad().item(0) == -1.F);
+    REQUIRE(b.grad().item(1) == -1.F);
+}
+
 TEST_CASE("MulScalars") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
