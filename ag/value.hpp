@@ -73,6 +73,11 @@ struct Value {
 
     static auto zeros() { return ValueT{}; }
 
+    auto begin() { return data_.begin(); }
+    auto begin() const { return data_.begin(); }
+    auto end() { return data_.end(); }
+    auto end() const { return data_.end(); }
+
 private:
     std::array<Float, N * M> data_{0.F};
 };

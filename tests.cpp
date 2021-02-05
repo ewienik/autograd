@@ -324,3 +324,15 @@ TEST_CASE("MatMulMatrixes") {
     REQUIRE(b.grad().item(1, 0) == 8.F);
     REQUIRE(b.grad().item(1, 1) == 8.F);
 }
+
+TEST_CASE("VarMatrix") {
+    auto a = Matrix<2, 2>{2.F, 3.F, 4.F, 5.F};
+    auto b = avg(a);
+    REQUIRE(b.value().item() == 3.5F);
+
+    b.backprop();
+    REQUIRE(a.grad().item(0, 0) == 0.25F);
+    REQUIRE(a.grad().item(0, 1) == 0.25F);
+    REQUIRE(a.grad().item(1, 0) == 0.25F);
+    REQUIRE(a.grad().item(1, 1) == 0.25F);
+}
