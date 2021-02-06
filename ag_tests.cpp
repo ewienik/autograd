@@ -1,5 +1,5 @@
 #include <ag/ag.hpp>
-#include <catch.hpp>
+#include <ext/catch2/catch.hpp>
 
 using namespace ag;
 

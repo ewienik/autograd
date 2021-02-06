@@ -7,7 +7,6 @@ add_library(ag INTERFACE)
 target_include_directories(ag
     INTERFACE
     ${PROJECT_SOURCE_DIR}
-    ext
 )
 
 add_executable(ag_tests main_tests.cpp ag_tests.cpp reqs_tests.cpp)
