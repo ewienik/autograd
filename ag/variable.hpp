@@ -4,7 +4,6 @@
 #include <ag/operation/leaf.hpp>
 #include <ag/types.hpp>
 #include <ag/value.hpp>
-#include <cassert>
 #include <memory>
 
 namespace ag {

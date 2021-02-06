@@ -4,7 +4,7 @@
 #include <ag/types.hpp>
 #include <algorithm>
 #include <array>
-#include <cassert>
+#include <ext/gsl/gsl>
 
 namespace ag {
 
@@ -35,21 +35,21 @@ struct Value {
 
     [[nodiscard]] auto item(int n) -> Float& {
         static_assert(N == 1 || M == 1, "item() method is only for vectors");
-        assert(n >= 0 && n < std::max(N, M));
+        Expects(n >= 0 && n < std::max(N, M));
         return data_[n];
     }
     [[nodiscard]] auto item(int n) const -> Float const& {
         static_assert(N == 1 || M == 1, "item() method is only for vectors");
-        assert(n >= 0 && n < std::max(N, M));
+        Expects(n >= 0 && n < std::max(N, M));
         return data_[n];
     }
 
     auto item(int n, int m) -> Float& {
-        assert(n >= 0 && n < N && m >= 0 && m < M);
+        Expects(n >= 0 && n < N && m >= 0 && m < M);
         return data_[n * M + m];
     }
     [[nodiscard]] auto item(int n, int m) const -> Float const& {
-        assert(n >= 0 && n < N && m >= 0 && m < M);
+        Expects(n >= 0 && n < N && m >= 0 && m < M);
         return data_[n * M + m];
     }
 
