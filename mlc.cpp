@@ -36,7 +36,7 @@ auto main(int argc, char* argv[]) -> int {
     auto path = std::string_view{argv[1]};  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
     constexpr auto image_size = 28 * 28;
-    constexpr auto batch_size = 1;
+    constexpr auto batch_size = 32;
     constexpr auto lr = 1e-3F;
 
     auto x = Matrix<batch_size, image_size>{};
