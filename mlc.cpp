@@ -5,7 +5,7 @@
 #include <iostream>
 #include <mnist/mnist_reader.hpp>
 #include <optional>
-#include <string_view>
+#include <string>
 
 using namespace ag;
 
@@ -33,7 +33,7 @@ auto main(int argc, char* argv[]) -> int {
         std::cerr << "Usage: mlc path_to_data\n";
         return 1;
     }
-    auto path = std::string_view{argv[1]};  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+    auto path = std::string{argv[1]};  // NOLINT(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
     constexpr auto image_size = 28 * 28;
     constexpr auto batch_size = 32;
@@ -47,7 +47,7 @@ auto main(int argc, char* argv[]) -> int {
     auto y_pred = matmul(x, weights) + bias;
     auto loss = avg((y - y_pred) * (y - y_pred));
 
-    auto dataset = mnist::read_dataset<std::vector, std::vector, std::uint8_t, std::uint8_t>(path.data());
+    auto dataset = mnist::read_dataset<std::vector, std::vector, std::uint8_t, std::uint8_t>(path);
     auto& images = dataset.training_images;
     auto& labels = dataset.training_labels;
     Expects(images.size() == labels.size());
