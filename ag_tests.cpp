@@ -1,5 +1,5 @@
 #include <ag/ag.hpp>
-#include <catch2/catch.hpp>
+#include <doctest/doctest.hpp>
 
 using namespace ag;
 
@@ -25,6 +25,7 @@ TEST_CASE("VectorCol2") {
     REQUIRE(vector.grad().item(1) == 0.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("Matrix2x2") {
     auto matrix = Matrix<2, 2>{1.F, 2.F, 3.F, 4.F};
     REQUIRE(matrix.value().item(0, 0) == 1.F);
@@ -37,6 +38,7 @@ TEST_CASE("Matrix2x2") {
     REQUIRE(matrix.grad().item(1, 1) == 0.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("PlusScalars") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
@@ -68,6 +70,7 @@ TEST_CASE("PlusScalars") {
     REQUIRE(b.grad().item() == 0.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("PlusVectors") {
     auto a = VectorRow<2>{2.F, 3.F};
     auto b = VectorRow<2>{4.F, 5.F};
@@ -102,6 +105,7 @@ TEST_CASE("PlusVectors") {
     REQUIRE(b.grad().item(1) == 1.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MinusScalars") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
@@ -132,6 +136,7 @@ TEST_CASE("MinusScalars") {
     REQUIRE(b.grad().item() == 0.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MinusVectors") {
     auto a = VectorCol<2>{2.F, 3.F};
     auto b = VectorCol<2>{4.F, 5.F};
@@ -160,6 +165,7 @@ TEST_CASE("MinusVectors") {
     REQUIRE(b.grad().item(1) == -1.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MulScalars") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
@@ -191,6 +197,7 @@ TEST_CASE("MulScalars") {
     REQUIRE(b.grad().item() == 0.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MulVectors") {
     auto a = VectorRow<2>{2.F, 3.F};
     auto b = VectorRow<2>{4.F, 5.F};
@@ -219,6 +226,7 @@ TEST_CASE("MulVectors") {
     REQUIRE(b.grad().item(1) == 4.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MatMulScalars") {
     auto a = Scalar{3.F};
     auto b = Scalar{4.F};
@@ -250,6 +258,7 @@ TEST_CASE("MatMulScalars") {
     REQUIRE(b.grad().item() == 0.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MatMulVectorsToScalar") {
     auto a = VectorRow<2>{2.F, 3.F};
     auto b = VectorCol<2>{4.F, 5.F};
@@ -275,6 +284,7 @@ TEST_CASE("MatMulVectorsToScalar") {
     REQUIRE(b.grad().item(1) == 4.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MatMulVectorsToMatrix") {
     auto a = VectorCol<2>{2.F, 3.F};
     auto b = VectorRow<2>{4.F, 5.F};
@@ -305,6 +315,7 @@ TEST_CASE("MatMulVectorsToMatrix") {
     REQUIRE(b.grad().item(1) == 7.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("MatMulMatrixes") {
     auto a = Matrix<2, 2>{2.F, 3.F, 4.F, 5.F};
     auto b = Matrix<2, 2>{6.F, 7.F, 8.F, 9.F};

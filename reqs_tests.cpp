@@ -1,5 +1,5 @@
 #include <ag/ag.hpp>
-#include <catch2/catch.hpp>
+#include <doctest/doctest.hpp>
 
 using namespace ag;
 
@@ -40,6 +40,7 @@ TEST_CASE("FromReqs3") {
     REQUIRE(b.grad().item() == -2.F);
 }
 
+// NOLINTNEXTLINE(readability-function-cognitive-complexity)
 TEST_CASE("FromReqsFinal") {
     auto weights = Matrix<2, 2>{1.F, 2.F, 3.F, 4.F};
     auto bias = VectorRow<2>{5.F, 6.F};
