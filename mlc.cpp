@@ -37,7 +37,7 @@ auto main(int argc, char* argv[]) -> int {
 
     constexpr auto image_size = 28 * 28;
     constexpr auto batch_size = 32;
-    constexpr auto lr = 1e-3F;
+    constexpr auto lr = 1e-7F;
 
     auto x = Matrix<batch_size, image_size>{};
     auto y = VectorCol<batch_size>{};
